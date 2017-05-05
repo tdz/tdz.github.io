@@ -1,6 +1,6 @@
 
 # The name of your website.
-name: event log
+name: transaction blog
 
 description:
 
@@ -8,7 +8,7 @@ description:
   meta: Thomas Zimmermann on picotm, transactions, and low-level software development.
 
   # Description of your site. This will show up on the front page.
-  subtitle: event log is the website and blog of Thomas Zimmermann. Topics are picotm, transactions, and low-level software development.
+  subtitle: transaction blog is the website and blog of Thomas Zimmermann. Topics are picotm, transactions, and low-level software development.
 
 author:
   name: Thomas Zimmermann # Change this!
