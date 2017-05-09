@@ -2,6 +2,7 @@
 layout:     post
 title:      Implementing a Simple Transaction Manager in C
 date:       2017-05-05 10:05:01 +0200
+tags:       [c, howto, stm, transaction, tutorial]
 categories: c howto stm transaction tutorial
 ---
 
@@ -345,6 +346,10 @@ resources. These resources are now available for being acquired by a
 concurrent transaction. Since `commit` is still `false`, the while loop
 continues and the transaction starts anew.
 
+*Be warned that the producer code doesn't yet roll-back correctly. We'll
+fix this in one of the next installments, but don't put this example into
+practice as it is.*
+
 If all invocations of `store_int()` succeed, the transaction eventually
 sets `commit` to `true`. It will then also release its resources, but now
 the while loop breaks. The transaction has committed its results.
@@ -357,7 +362,7 @@ Now that we have a producer, let's also look at the consumer side.
 
 ~~~ c
     void
-    producer_func(void)
+    consumer_func(void)
     {
         int i0, i1;
 
