@@ -1,6 +1,10 @@
 ---
 ---
 
+/*
+ * Added feed for RSS feed icons
+ */
+
 ::selection {
   background: rgba({{ site.theme-color }}, .2);
 }
@@ -484,4 +488,10 @@ nav a.current {
     margin-top: 120px;
     margin-bottom: 0;
   }
+}
+
+.feed {
+  margin-left: 0px;
+  padding: 0 0 0 31px;
+  background: url("../images/feed-icon-28x28.png") no-repeat 0 50%;
 }
