@@ -1,8 +1,9 @@
 ---
-layout: post
-title:  Writing the Beginning and End of a Transaction
-date:   2017-05-19 09:00:00 +0200
-tags:   [c, howto, longjmp, nosql, setjmp, stm, transaction, transactional memory, tutorial]
+layout:     post
+title:      Writing the Beginning and End of a Transaction
+date:       2017-05-19 09:00:00 +0200
+tags:       [c, howto, longjmp, nosql, setjmp, stm, transaction, transactional memory, tutorial]
+og-image:   share2.png
 ---
 
 [Last time][post20170512] we finished our transaction manager and example
