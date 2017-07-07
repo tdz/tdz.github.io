@@ -2,7 +2,7 @@
 layout:     post
 title:      Types of Transactional Operations
 date:       2017-07-07 10:00:00 +0200
-tags:       [c, errno, howto, malloc, nosql, posix, stm, transaction, transactional memory, tutorial]
+tags:       [c, howto, irrevocability, nosql, posix, stm, transaction, transactional memory, tutorial]
 og-image:   share2.png
 ---
 
