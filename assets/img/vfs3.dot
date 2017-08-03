@@ -1,0 +1,27 @@
+
+strict digraph {
+
+    hardlink0 [label="/home/joe_user/my_file.txt" shape=box style=filled]
+    softlink0 [label="/home/joe_user/my_soft_link.txt" shape=box style=filled]
+
+    fbuf0 [label="File buffer no. 0" shape=box style=filled]
+    slbuf0 [label="Soft link no. 0" shape=box style=filled]
+
+    subgraph cluster_vfs {
+        label="File system"
+
+        hardlink0
+        softlink0
+    }
+    subgraph cluster_disk {
+        label="Disk"
+        labelloc=b
+
+        fbuf0
+        slbuf0
+    }
+
+    hardlink0 -> fbuf0
+    softlink0 -> slbuf0
+    slbuf0 -> hardlink0
+}
