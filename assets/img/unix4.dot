@@ -1,0 +1,37 @@
+
+strict digraph {
+
+    fd0 [label="File descriptor no. 0" shape=box style=filled]
+    fd2 [label="File descriptor no. 2" shape=box style=filled]
+
+    fdtab [label="File-descriptor table | <fd0> 0 | | <fd2> 2 | ... |" shape=record style=filled]
+    ofd0 [label="Open file description no. 0" shape=box style=filled]
+    ofd1 [label="Open file description no. 1" shape=box style=filled]
+    fbuf0 [label="File buffer no. 0" shape=box style=filled]
+
+    subgraph cluster_userspace {
+        label="User space"
+
+        fd0
+        fd2
+    }
+
+
+    subgraph cluster_kernel {
+        label="Kernel"
+        labelloc=b
+
+        fdtab
+
+        ofd0
+        ofd1
+        fbuf0
+    }
+
+    fd0 -> fdtab:fd0
+    fd2 -> fdtab:fd2
+    fdtab:fd0 -> ofd0
+    fdtab:fd2 -> ofd1
+    ofd0 -> fbuf0
+    ofd1 -> fbuf0
+}
