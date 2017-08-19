@@ -162,9 +162,9 @@ like this.
 ![Data structures after calling `execl()` with `O_CLOEXEC` set.]({{ site.baseurl }}/img/unix8.png)
 
 The `O_CLOEXEC` flag can also be set and cleared with a call to
-[`fstat()`][posix:fstat] after the file descriptor has been created. But
-setting it later creates the possibility of meanwhile calling `execl()` and
-leaking file descriptors.
+~~fstat()~~ [`fcntl()`][posix:fcntl][^1] after the file
+descriptor has been created. But setting it later creates the possibility
+of meanwhile calling `execl()` and leaking file descriptors.
 
 In practice, the safest strategy is to *always* set `O_CLOEXEC` when a new
 file descriptor gets created; and explictly clear the flag right before the
@@ -197,10 +197,18 @@ during `fork()` and `execl()`.
 If you like this blog post about the basics of Unix file I/O, please
 subscribe to the RSS feed, follow on Twitter or share on social networks.
 
+#### Footnotes
+
+[^1]:   Edit: The text originally said that [`fstat()`][posix:fstat] updates
+        a file descriptor's `O_CLOEXEC` flag. The correct function is
+        [`fcntl()`][posix:fcntl]. The command parameter is named
+        `FD_CLOEXEC`.
+
 [medium:ofinjch]:           http://medium.com/@fun_cuddles/opening-files-in-node-js-considered-harmful-d7de566d499f
 [posix:close]:              http://pubs.opengroup.org/onlinepubs/9699919799/functions/close.html
 [posix:dup]:                http://pubs.opengroup.org/onlinepubs/9699919799/functions/dup.html
 [posix:execl]:              http://pubs.opengroup.org/onlinepubs/9699919799/functions/execl.html
+[posix:fcntl]:              http://pubs.opengroup.org/onlinepubs/9699919799/functions/fcntl.html
 [posix:fork]:               http://pubs.opengroup.org/onlinepubs/9699919799/functions/fork.html
 [posix:fstat]:              http://pubs.opengroup.org/onlinepubs/9699919799/functions/fstat.html
 [posix:open]:               http://pubs.opengroup.org/onlinepubs/9699919799/functions/open.html
