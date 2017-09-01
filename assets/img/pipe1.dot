@@ -1,0 +1,38 @@
+
+strict digraph {
+
+    fd0 [label="File descriptor no. 0" fillcolor=lightblue shape=box style=filled]
+    fd1 [label="File descriptor no. 1" fillcolor=lightblue shape=box style=filled]
+
+    fdtab [label="File-descriptor table | <fd0> 0 | <fd1> 1 | ... |" fillcolor=lightblue shape=record style=filled]
+
+    ofd0 [label="Open file description no. 0\n(Read end)" shape=box style=filled]
+    ofd1 [label="Open file description no. 1\n(Write end)" shape=box style=filled]
+
+    pipe0 [label="FIFO buffer no. 0" shape=box style=filled]
+
+    subgraph cluster_userspace {
+        label="User space"
+
+        fd0
+        fd1
+    }
+
+
+    subgraph cluster_kernel {
+        label="Kernel"
+        labelloc=b
+
+        fdtab
+        ofd0
+        ofd1
+        pipe0
+    }
+
+    fd0 -> fdtab:fd0
+    fd1 -> fdtab:fd1
+    fdtab:fd0 -> ofd0
+    fdtab:fd1 -> ofd1
+    ofd0 -> pipe0
+    ofd1 -> pipe0
+}
