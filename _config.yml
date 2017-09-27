@@ -126,6 +126,8 @@ var_guest_post_by: Guest post by
 var_your_email: Your email
 var_your_message: Your message
 
+plugins:
+  - jekyll-paginate-v2
 
 ##################
 # BUILD SETTINGS #
