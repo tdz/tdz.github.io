@@ -29,8 +29,6 @@ body {
   font-weight: 400;
   color: rgba({{ site.text-color }}, .8);
   background-color: rgb({{ site.background-color }});
-  background-image: url(../images/bg.png);
-  background-repeat: no-repeat;
 }
 html, body {
   height: 100%;
