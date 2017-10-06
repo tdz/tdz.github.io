@@ -173,19 +173,11 @@ for failed allocations.
  - A `NULL` pointer returned by a zero-size allocation is accepted by
    `free()`.
 
-#### Errata
-
-*2017-10-06: C11 defect report [DR 400][openstd:dr400] changes the specification
-for zero-size allocations to return NULL to indicate an error, or behave as
-if a non-zero value had been requested. So iff you're using a conforming
-implementation of C11, only testing for NULL should work in all situatons.*
-
 If you like this blog post about memory allocation, please subscribe to
 the RSS feed, follow on Twitter or share on social networks.
 
 [mail:tdz]:                 mailto:{{ site.author.email }}
 [man7:malloc]:              http://man7.org/linux/man-pages/man3/malloc.3.html
-[openstd:dr400]:            http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2109.htm#dr_400
 [posix:errno]:              http://pubs.opengroup.org/onlinepubs/9699919799/functions/errno.html
 [posix:free]:               http://pubs.opengroup.org/onlinepubs/9699919799/functions/free.html
 [posix:malloc]:             http://pubs.opengroup.org/onlinepubs/9699919799/functions/malloc.html
