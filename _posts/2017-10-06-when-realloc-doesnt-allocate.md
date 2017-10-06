@@ -1,183 +1,189 @@
 ---
 layout:     post
-title:      malloc()'s Tricky Error Reporting
-date:       2017-09-08 12:30:00 +0200
-tags:       [c, errno, free, howto, linux, malloc, posix, tutorial, unix]
+title:      When realloc() Doesn't Allocate
+date:       2017-10-06 08:00:00 +0200
+tags:       [c, errno, howto, linux, malloc, posix, realloc, tutorial, unix]
 og-image:   tux.png
 ---
 
-Most error checks for `malloc()` are incorrect. In this blog post, we're
-going to look at the details of `malloc()`'s error reporting semantics and
-how to test if a call to `malloc()` succeeded.
+I recently wrote about [correct error handling for `malloc()`][post:20170908].
+Coincidently I came across an older [defect report][openstd:dr400] on the
+behavior of C's [`realloc()`][man7:realloc] function just a few days ago. In
+this blog post, we're going to look at `realloc()`'s behavior if it's out
+of memory or if the requested size is zero.
 
 <!-- excerpt -->
 
-#### The Semantics of `malloc()`
+#### A Simple `realloc()`
 
-If you have seen at least a few lines of C code, you've probably come
-across [`malloc()`][posix:malloc], the interface for allocating memory
-from the operating system at runtime.
+In C11, new memory blocks are dynamically allocated using one of
+[`malloc()`][man7:malloc], [`calloc()`][man7:calloc], or
+[`aligned_alloc()`][man7:aligned_alloc].
 
-``` c
-size_t size = calc_amount_of_bytes();
-
-void* ptr = malloc(size);
-```
-
-In this example, the function `calc_amount_of_bytes()` is a placeholder
-that returns the number of bytes to be allocated. This memory size is given
-to `malloc()`, which then acquires a large-enough memory buffer from the
-operating system. Finally, `malloc()` returns a pointer to the beginning
-of the buffer.
-
-#### First Try: Testing the Returned Value
-
-In the case that `malloc()` failed to allocate the requested amount
-of memory, it returns a `NULL` pointer. Quoting
-[`malloc()`'s man page][man7:malloc]:
-
-> The  malloc()  and  calloc()  functions return a pointer to the
-> allocated memory, which is suitably aligned for any built-in type.
-> On error, these functions return NULL.
-
-Similar descriptions can be found in the ISO C Standard, the POSIX
-Standard and the `malloc()` page on MSDN.
-
-The usual, almost ideomatic way of testing for allocation errors therefore
-looks like this.
+If you read this blog post, you've probably seen calls to these functions
+frequently, including calls to [`realloc()`][man7:realloc]. A call to
+`realloc()` changes the size of a memory block while preserving the block's
+existing content. Here's a naive implementation.
 
 ``` c
-size_t size = calc_amount_of_bytes();
+void*
+realloc(void* old_mem, size_t new_size)
+{
+    if (!old_mem) {
+        return malloc(new_size);
+    } else if (!new_size) {
+        return old_mem;
+    }
 
-void* ptr = malloc(size);
-if (!ptr) {
-    // allocation error detected!
+    void* new_mem = malloc(new_size);
+    if (!new_mem) {
+        return NULL;
+    }
+
+    size_t old_size = ; // non-portable: get size of 'old_mem' from allocator
+
+    memcpy(new_mem, old_mem, old_size < new_size ? old_size : new_size);
+    free(old_mem);
+
+    return new_mem;
 }
 ```
 
-And this code is... **wrong.**
+What does it do? First of all, we get two corner cases out of the way. If
+no old memory buffer is specified, `realloc()` shall behave like `malloc()`.
+Our first condition handles this. Then we test if the new size is not zero. If
+it is zero, we return the old memory. [C11 with DR 400][openstd:dr400] say that
+successful zero-size allocations shall behave *as if the size were some nonzero
+value [...].* We already know that `old_mem` contains a non-`NULL` value, so we
+return this. It's not supposed to be dereferenced after this point, though.
 
-Again, here's what `malloc()`'s man page says. Note the additional sentence.
+With the corner cases handled, we can perform the *real* `realloc()`, which is
+`malloc()`-`memcpy()`-`free()` semantically. And finally we return the new
+buffer, which contains the content of the old buffer.
 
-> The  malloc()  and  calloc()  functions return a pointer to the allocated
-> memory, which is suitably aligned for any built-in type.  On error, these
-> functions return NULL.  NULL may also be returned by a successful call to
-> malloc() with a size of zero [...].
+For the `memcpy()` operation, we need the size of the old buffer. There's no
+such functionality standardized by ISO C or POSIX, but most allocators provide
+an interface for this: [`malloc_usable_size()`][man7:malloc_usable_size] in the
+GNU libc, BSD and Bionic, [`_msize()`][msdn:_msize] on Windows, or
+[`malloc_size()`][unix:malloc_size] on MacOS.
 
-So if the allocation size is *0,* `malloc()` is allowed to return `NULL` even
-though it actually succeeded. For some reason, everyone seems to ignore this
-additional sentence. I admit that I'm guilty of this as well.
+#### Handling the Returned Value
 
-#### Second Try: Testing `errno`
-
-Just testing the returned pointer for `NULL` doesn't work. My solution to
-this problem was to test the value of [`errno`][posix:errno] instead. If
-the allocation fails, `malloc()` sets the value of `errno` to `ENOMEM`
-before it returns `NULL`.
-
-The pattern for testing `malloc()` errors via `errno` looks like this.
+Let's now call `realloc()` and see what it does. One common programming
+mistake is illustrated below.
 
 ``` c
-size_t size = calc_amount_of_bytes();
+void* mem = malloc(10); /* non-zero allocation */
+...
 
-errno = 0;
-void* ptr = malloc(size);
-if (errno) {
-    // allocation error detected!
+mem = realloc(mem, 20);
+if (!mem) {
+    /* handle allocation failure */
 }
 ```
 
-Here, we clear `errno` to a neutral value before calling `malloc()`. If
-`errno` is set afterwards, an allocation error has accured.
-
-Unfortunately, it's not a correct solution either. The pattern worked
-very well on all kinds of Linux systems until I came across a `malloc()`
-implementation on one of Sony's Android phones.
-
-On Firefox OS, we used to have a number of system daemons for running the
-Android drivers separately from the main system. When reviewing patches to
-these daemons, I asked patch authors to use the `errno` pattern and avoid
-the test for the `NULL` pointer.
-
-On Sony's Android phone, this didn't work. We had this pattern in our
-Bluetooth daemon, but Sony's implementation of `malloc()` sets `errno` even
-if the allocation succeeds. The Bluetooth daemon incorrectly interpreted
-this as an error.
-
-I don't blame Sony for this problem. It was a mistake on my side, as the
-POSIX standard says the following about `errno`:
-
-> No function in this volume of POSIX.1-2008 shall set errno to 0. The
-> setting of errno after a successful call to a function is unspecified
-> unless the description of that function specifies that errno shall not
-> be modified.
-
-In other words, even in the case of success, `malloc()` is allowed to modify
-the value of `errno`. It's just not allowed to set it to *0.*
-
-#### Third Try: Testing the Allocation Size and the Returned Pointer
-
-This brings us back to testing the returned pointer. Since it's only
-allowed to be legally `NULL` if the requested size is zero, we have to
-test specifically for this combination. This pattern looks as shown below.
+This pattern can often be found, although it is incorrect. What happens if
+the re-allocation fails? Of course, `NULL` is returned. If we immediately
+store `realloc()`'s returned value in `mem`, the old `mem` buffer leaks if
+`realloc()` fails. The correct code looks like this.
 
 ``` c
-size_t size = calc_amount_of_bytes();
+void* mem = malloc(10); // non-zero allocation
+...
 
-void* ptr = malloc(size);
-if (size && !ptr) {
-    // allocation error detected!
+void* tmp = realloc(mem, 20);
+if (!tmp) {
+    /* handle allocation failure */
 }
+mem = tmp; /* Only update 'mem' is it's safe to do so */
 ```
 
-And this is the solution to the problem. The pointer test is only allowed
-if we requested a memory buffer with a size greater than zero. And only then
-it's an error. Allocations of zero-size buffers always succeed.
+Even if `realloc()` failed to allocate a new buffer, we still have our
+pointer to the old buffer and can free the old buffer later on.
 
-It's important to note that the behavior for zero-size allocations is
-completely up to the implementation. It's also legal that `malloc()` returns
-a pointer different from `NULL`. It could even set `errno` in this case. Our
-current pattern handles these implementations as well.
-
-A nice detail about releasing the allocated memory with
-[`free()`][posix:free] is, that `free()` accepts `NULL` as a valid argument.
-So it's always possible to use a code pattern like the one shown below.
+Another, although less common, mistake is to access memory out-of-bounds
+after shrinking a buffer. Here's an example.
 
 ``` c
-size_t size = calc_amount_of_bytes();
+char* mem = malloc(10); /* non-zero allocation */
+...
 
-void* ptr = malloc(size);
-if (size && !ptr) {
-    // allocation error detected!
+void* tmp = realloc(mem, 5); /* shrink buffer */
+if (!tmp) {
+    /* handle allocation failure */
 }
+mem = tmp;
 
-free(ptr);
+mem[7] = 0; /* This memory location is now outside the allocated buffer! */
 ```
 
-If you know a recent system where this code fails for allocation of zero
-size, I'd like to [hear about][mail:tdz] it.
+Remember that semantically `realloc()` allocates a new buffer, copies the
+old buffer into the new buffer, and then frees the old buffer. Depending on
+the requested buffer size, the actual buffer size can also shrink. Accessing
+memory that was allocated with the old buffer, but not with the new buffer is
+therefore undefined behavior.
+
+Finally, let's see what happens if the requested new size is zero. Quoting
+[DR 400][openstd:dr400] again:
+
+|       | `realloc(NULL, 0)`                         | `realloc(non-NULL ptr, 0)`                                |
+| ----- | ------------------------------------------ | --------------------------------------------------------- |
+| AIX   | always returns `NULL`, errno is `EINVAL`   | always returns `NULL`, frees `ptr`, errno is `EINVAL`     |
+| BSD   | returns `NULL` on error, errno is `ENOMEM` | returns NULL on error, `ptr` unchanged, errno is `ENOMEM` |
+| glibc | returns `NULL` on error, errno is `ENOMEM` | always returns `NULL`, `ptr` freed, errno unchanged       |
+
+This is very inconsistent among older C implementations before C11.
+Every implementation behaves in a different way. I can't bring myself
+to even try to write error-checking code that works correctly with all
+these variants. If you do, please [send me some example code][mail:tdz]
+and I'll post it here.
+
+If we're on C11, we're lucky. For zero-size reallocations, DR 400
+specifies that `realloc()` shall either return a `NULL` pointer to indicate
+an error, or that the old buffer remains in place. For all pre-C11 code that
+requires portability between different implementations, it's best to
+write a wrapper around `realloc()` that handles the corner cases specifically.
+
+``` c
+void*
+portable_realloc(void* mem, size_t siz)
+{
+    if (!mem) {
+        return malloc(siz);
+    } else if (!siz) {
+        return mem;
+    }
+    return realloc(mem, siz);
+}
+```
 
 #### Summary
 
-In this blog post, we investigated different patterns for testing
-for failed allocations.
+In this blog post we looked at the corner cases of `realloc()`.
 
- - `malloc()` returns `NULL` on errors.
- - `malloc()` may return `NULL` for zero-size allocations.
- - Testing the returned value does not work reliably with zero-size
-   allocations.
- - `malloc()` is allowed to modify `errno` during successful allocations.
- - Testing the returned error code does not work reliably.
- - Testing the returned value iff the allocation size is larger than zero
-   works reliably on modern systems.
- - A `NULL` pointer returned by a zero-size allocation is accepted by
-   `free()`.
+ - If the old memory buffer is `NULL`, `realloc()` behaves like `malloc()`.
+ - If the requested size is zero, behavior is implementation defined.
+ - On allocation errors, pre-C11 implementations of `realloc()` handle
+   `errno`, the old memory buffer and their return value in different ways.
+ - Portable code should either switch to C11, or wrap `realloc()` in a
+   function that handles the corner cases in a portable way.
+ - Callers must hold a pointer to the old buffer until they tested for
+   the success of `realloc()`. Otherwise the application leaks the old
+   memory buffer on allocation failures.
+ - Calls to `realloc` may shrink memory buffers. Memory that was present
+   in the old buffer, may not be available in the new shrinked memory buffer.
 
 If you like this blog post about memory allocation, please subscribe to
 the RSS feed, follow on Twitter or share on social networks.
 
 [mail:tdz]:                 mailto:{{ site.author.email }}
+[man7:aligned_alloc]:       http://man7.org/linux/man-pages/man3/aligned_alloc.3.html
+[man7:free]:                http://man7.org/linux/man-pages/man3/free.3.html
+[man7:calloc]:              http://man7.org/linux/man-pages/man3/calloc.3.html
 [man7:malloc]:              http://man7.org/linux/man-pages/man3/malloc.3.html
-[posix:errno]:              http://pubs.opengroup.org/onlinepubs/9699919799/functions/errno.html
-[posix:free]:               http://pubs.opengroup.org/onlinepubs/9699919799/functions/free.html
-[posix:malloc]:             http://pubs.opengroup.org/onlinepubs/9699919799/functions/malloc.html
+[man7:malloc_usable_size]:  http://man7.org/linux/man-pages/man3/malloc_usable_size.3.html
+[man7:realloc]:             http://man7.org/linux/man-pages/man3/realloc.3.html
+[msdn:_msize]:              http://msdn.microsoft.com/en-us/library/z2s077bc(v=vs.140).aspx
+[openstd:dr400]:            http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2109.htm#dr_400
+[post:20170908]:            {% post_url 2017-09-08-mallocs-tricky-error-reporting %}
+[unix:malloc_size]:         http://www.unix.com/man-page/osx/3/malloc_size/
