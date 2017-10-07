@@ -25,6 +25,10 @@ comparable to M.Sc.).
 
 ### Papers, Publications and Presentations
 
+[T&uuml;bix 2017][tuebix], [slide deck][tuebix2017:slides]
+<br>
+Presentation on picotm, Jun 2017
+
 Firefox OS (with Ming Yin), [slide deck][firefoxos2014:slides]
 <br>
 Presentation at Hochschule f&uuml;r Telekommunikation Leipzig, May 2014
@@ -52,3 +56,5 @@ Student paper, Jan 2008
 [profperf2013:examples]:    http://github.com/tdz/performance/tree/master/examples
 [profperf2013:slides]:      {{ site.baseurl }}/pubs/profperf2013.pdf
 [thesis]:                   {{ site.baseurl }}/pubs/thesis.pdf
+[tuebix]:                   http://www.tuebix.org
+[tuebix2017:slides]:        {{ site.baseurl }}/pubs/tuebix2017-picotm.pdf
