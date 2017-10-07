@@ -23,7 +23,11 @@ Mozilla.
 I hold a University degree in Computer Science (_Diplom-Informatiker_,
 comparable to M.Sc.).
 
-### Papers and Publications
+### Papers, Publications and Presentations
+
+Profiling and Performance Workshop (with Gabriele Svelto), [slide deck][profperf2013:slides], [examples][profperf2013:examples]
+<br>
+Workshop at Mozilla Paris, June 2013
 
 [Transactional Execution of System-Library Functions][thesis]
 <br>
@@ -37,7 +41,9 @@ Student paper, May 2008
 <br>
 Student paper, Jan 2008
 
-[beleg]:        {{ site.baseurl }}/pubs/beleg.pdf
-[contact]:      {{ size.baseurl }} /contact/
-[mda_overview]: {{ site.baseurl }}/pubs/mda_overview.pdf
-[thesis]:       {{ site.baseurl }}/pubs/thesis.pdf
+[beleg]:                    {{ site.baseurl }}/pubs/beleg.pdf
+[contact]:                  {{ size.baseurl }} /contact/
+[mda_overview]:             {{ site.baseurl }}/pubs/mda_overview.pdf
+[profperf2013:examples]:    http://github.com/tdz/performance/tree/master/examples
+[profperf2013:slides]:      {{ site.baseurl }}/pubs/profperf2013.pdf
+[thesis]:                   {{ site.baseurl }}/pubs/thesis.pdf
