@@ -54,7 +54,7 @@ Student paper, May 2008
 Student paper, Jan 2008
 
 [beleg]:                    {{ site.baseurl }}/pubs/beleg.pdf
-[contact]:                  {{ size.baseurl }} /contact/
+[contact]:                  {{ site.baseurl }}/contact/
 [firefoxos2014:slides]:     {{ site.baseurl }}/pubs/firefoxos2014.pdf
 [froscon2017]:              http://www.froscon.de
 [froscon2017:video]:        http://www.youtube.com/watch?v=0S3l73_73ME
