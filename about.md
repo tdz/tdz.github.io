@@ -25,6 +25,10 @@ comparable to M.Sc.).
 
 ### Papers, Publications and Presentations
 
+Firefox OS (with Ming Yin), [slide deck][firefoxos2014:slides]
+<br>
+Presentation at Hochschule f&uuml;r Telekommunikation Leipzig, May 2014
+
 Profiling and Performance Workshop (with Gabriele Svelto), [slide deck][profperf2013:slides], [examples][profperf2013:examples]
 <br>
 Workshop at Mozilla Paris, June 2013
@@ -43,6 +47,7 @@ Student paper, Jan 2008
 
 [beleg]:                    {{ site.baseurl }}/pubs/beleg.pdf
 [contact]:                  {{ size.baseurl }} /contact/
+[firefoxos2014:slides]:     {{ site.baseurl }}/pubs/firefoxos2014.pdf
 [mda_overview]:             {{ site.baseurl }}/pubs/mda_overview.pdf
 [profperf2013:examples]:    http://github.com/tdz/performance/tree/master/examples
 [profperf2013:slides]:      {{ site.baseurl }}/pubs/profperf2013.pdf
