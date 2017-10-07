@@ -25,6 +25,10 @@ comparable to M.Sc.).
 
 ### Papers, Publications and Presentations
 
+[FrOSCon 2017][froscon2017], [video][froscon2017:video], [slide deck][froscon2017:slides]
+<br>
+Presentation, Aug 2017
+
 [T&uuml;bix 2017][tuebix], [slide deck][tuebix2017:slides]
 <br>
 Presentation on picotm, Jun 2017
@@ -52,6 +56,9 @@ Student paper, Jan 2008
 [beleg]:                    {{ site.baseurl }}/pubs/beleg.pdf
 [contact]:                  {{ size.baseurl }} /contact/
 [firefoxos2014:slides]:     {{ site.baseurl }}/pubs/firefoxos2014.pdf
+[froscon2017]:              http://www.froscon.de
+[froscon2017:video]:        http://www.youtube.com/watch?v=0S3l73_73ME
+[froscon2017:slides]:       {{ site.baseurl }}/pubs/froscon2017-picotm.pdf
 [mda_overview]:             {{ site.baseurl }}/pubs/mda_overview.pdf
 [profperf2013:examples]:    http://github.com/tdz/performance/tree/master/examples
 [profperf2013:slides]:      {{ site.baseurl }}/pubs/profperf2013.pdf
