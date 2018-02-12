@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-I am Thomas Zimmermann. I am the creator and maintainer of picotm, the
+I am Thomas Zimmermann. I am the creator and maintainer of [picotm], the
 system-level transaction manager. My professional interest is in
 transactional, distributed, and operating systems; systems development;
 and low-level programming.
@@ -60,6 +60,7 @@ Student paper, Jan 2008
 [froscon2017:video]:        http://www.youtube.com/watch?v=0S3l73_73ME
 [froscon2017:slides]:       {{ site.baseurl }}/pubs/froscon2017-picotm.pdf
 [mda_overview]:             {{ site.baseurl }}/pubs/mda_overview.pdf
+[picotm]:                   http://picotm.org/
 [profperf2013:examples]:    http://github.com/tdz/performance/tree/master/examples
 [profperf2013:slides]:      {{ site.baseurl }}/pubs/profperf2013.pdf
 [thesis]:                   {{ site.baseurl }}/pubs/thesis.pdf
