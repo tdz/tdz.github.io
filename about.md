@@ -25,6 +25,10 @@ comparable to M.Sc.).
 
 ### Papers, Publications and Presentations
 
+[System-Level Transactions with picotm][shortpaper20180212]
+<br>
+Shortpaper, Feb 2018
+
 [FrOSCon 2017][froscon2017], [video][froscon2017:video], [slide deck][froscon2017:slides]
 <br>
 Presentation, Aug 2017
@@ -63,6 +67,7 @@ Student paper, Jan 2008
 [picotm]:                   http://picotm.org/
 [profperf2013:examples]:    http://github.com/tdz/performance/tree/master/examples
 [profperf2013:slides]:      {{ site.baseurl }}/pubs/profperf2013.pdf
+[shortpaper20180212]:       {{ site.baseurl }}/pubs/picotm-shortpaper20180212.pdf
 [thesis]:                   {{ site.baseurl }}/pubs/thesis.pdf
 [tuebix]:                   http://www.tuebix.org
 [tuebix2017:slides]:        {{ site.baseurl }}/pubs/tuebix2017-picotm.pdf
