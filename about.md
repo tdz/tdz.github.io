@@ -7,7 +7,7 @@ permalink: /about/
 I am Thomas Zimmermann. I am the creator and maintainer of picotm, the
 system-level transaction manager. My professional interest is in
 transactional, distributed, and operating systems; systems development;
-and low-level programming;
+and low-level programming.
 
 ### Professional
 
