@@ -25,6 +25,10 @@ comparable to M.Sc.).
 
 ### Papers, Publications and Presentations
 
+[Chemnitzer Linux-Tage 2018][clt2018], [video][clt2018:video], [slide deck][clt2018:slides]
+<br>
+Presentation, Mar 2018
+
 [System-Level Transactions with picotm][shortpaper20180212]
 <br>
 Shortpaper, Feb 2018
@@ -58,6 +62,9 @@ Student paper, May 2008
 Student paper, Jan 2008
 
 [beleg]:                    {{ site.baseurl }}/pubs/beleg.pdf
+[clt2018]:                  http://chemnitzer.linux-tage.de/2018/de/
+[clt2018:video]:            http://chemnitzer.linux-tage.de/2018/de/programm/beitrag/203#video
+[clt2018:slides]:           {{ site.baseurl }}/pubs/clt2018-picotm.pdf
 [contact]:                  {{ site.baseurl }}/contact/
 [firefoxos2014:slides]:     {{ site.baseurl }}/pubs/firefoxos2014.pdf
 [froscon2017]:              http://www.froscon.de
