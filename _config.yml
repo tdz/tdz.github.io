@@ -1,6 +1,6 @@
 
 # The name of your website.
-name: transaction blog
+name: tzimmermann dot org
 
 description:
 
@@ -8,7 +8,7 @@ description:
   meta: Thomas Zimmermann on picotm, transactions, and low-level software development.
 
   # Description of your site. This will show up on the front page.
-  subtitle: transaction blog is the website and blog of Thomas Zimmermann. Topics are picotm, transactions, and low-level software development.
+  subtitle: This is the website and blog of Thomas Zimmermann. Topics are picotm, transactions, and low-level software development.
 
 author:
   name: Thomas Zimmermann # Change this!
@@ -20,7 +20,7 @@ author:
   # want it.
   info:
 
-url: http://transactionblog.org
+url: http://tzimmermann.org
 baseurl:
 
 # language attribute in <html> element.
