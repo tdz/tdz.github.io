@@ -8,6 +8,8 @@
     <br>
     {% endif %}
     {{ site.var_on_the_web }}:&nbsp;
+    {% if site.github %}<a class="fa fa-github" href="{{ site.github }}"></a>{% endif %}
+    {% if site.linkedin %}<a class="fa fa-linkedin" href="{{ site.linkedin }}"></a>{% endif %}
     {% if site.twitter %}<a class="fa fa-twitter" href="{{ site.twitter }}"></a>{% endif %}
     {% if site.youtube %}<a class="fa fa-youtube" href="{{ site.youtube }}"></a>{% endif %}
     {% if site.instagram %}<a class="fa fa-instagram" href="{{ site.instagram }}"></a>{% endif %}
@@ -17,8 +19,6 @@
     {% if site.reddit %}<a class="fa fa-reddit" href="{{ site.reddit }}"></a>{% endif %}
     {% if site.soundcloud %}<a class="fa fa-soundcloud" href="{{ site.soundcloud }}"></a>{% endif %}
     {% if site.medium %}<a class="fa fa-medium" href="{{ site.medium }}"></a>{% endif %}
-    {% if site.linkedin %}<a class="fa fa-linkedin" href="{{ site.linkedin }}"></a>{% endif %}
-    {% if site.github %}<a class="fa fa-github" href="{{ site.github }}"></a>{% endif %}
     {% if site.behance %}<a class="fa fa-behance" href="{{ site.behance }}"></a>{% endif %}
     {% if site.codepen %}<a class="fa fa-codepen" href="{{ site.codepen }}"></a>{% endif %}
     {% if site.dribbble %}<a class="fa fa-dribbble" href="{{ site.dribbble }}"></a>{% endif %}
