@@ -19,6 +19,17 @@ I currently work for SUSE on the GNU/Linux graphics stack.
 I hold a University degree in Computer Science (_Diplom-Informatiker_,
 comparable to M.Sc.).
 
+### Contact
+
+My primary email address is
+<a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a>. You
+can also reach me at
+<a href="mailto:tdz@users.sourceforge.net">tdz@users.sourceforge.net</a>
+for anything related to Free and Open Source Software.
+
+I'm also on <a href="{{ site.github }}">GitHub</a> and
+<a href="{{ site.linkedin }}">LinkedIn</a>.
+
 ### Papers, Publications and Presentations
 
 [Chemnitzer Linux-Tage 2018][clt2018], [video][clt2018:video], [slide deck][clt2018:slides]
@@ -61,7 +72,6 @@ Student paper, Jan 2008
 [clt2018]:                  http://chemnitzer.linux-tage.de/2018/de/
 [clt2018:video]:            http://chemnitzer.linux-tage.de/2018/de/programm/beitrag/203#video
 [clt2018:slides]:           {{ site.baseurl }}/pubs/clt2018-picotm.pdf
-[contact]:                  {{ site.baseurl }}/contact/
 [firefoxos2014:slides]:     {{ site.baseurl }}/pubs/firefoxos2014.pdf
 [froscon2017]:              http://www.froscon.de
 [froscon2017:video]:        http://www.youtube.com/watch?v=0S3l73_73ME
