@@ -491,5 +491,5 @@ nav a.current {
 .feed {
   margin-left: 0px;
   padding: 0 0 0 31px;
-  background: url("../images/feed-icon-28x28.png") no-repeat 0 50%;
+/*  background: url("../images/feed-icon-28x28.png") no-repeat 0 50%; */
 }
