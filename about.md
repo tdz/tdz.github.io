@@ -11,7 +11,7 @@ and low-level programming.
 
 I have been around in FOSS for roughly 20 years and been programming mainly in
 C and C++ since 2000. I have experience with the complete software stack, from
-hardware emulation in QEMU to Linux drivers to system's programming, to
+hardware emulation in QEMU to Linux drivers to system's programming to
 graphics programming with OpenGL and GTK+. I (re-)designed the low-level
 communication and driver architecture of Firefox OS during my time at Mozilla.
 I currently work for SUSE on the GNU/Linux graphics stack.
